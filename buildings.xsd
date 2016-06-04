@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:simpleType name="buildingcodetype">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{3}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="positiontype">
+		<xs:sequence>
+			<xs:element name="Latitude" type="xs:decimal"/>
+			<xs:element name="Longitude" type="xs:decimal"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="addrestype">
+		<xs:sequence>
+			<xs:element name="StreetNo" type="xs:integer"/>
+			<xs:element name="StrName" type="xs:string"/>
+			<xs:element name="City" type="xs:string"/>
+			<xs:element name="State" type="xs:string"/>
+			<xs:element name="Zip" type="xs:integer"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="buildings">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="building" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="BuildingName" type="xs:string"/>
+							<xs:element name="Position" type="positiontype"/>
+							<xs:element name="Address" type="addrestype" minOccurs="0"/>
+						</xs:sequence>
+						<xs:attribute name="BuildingCode" type="buildingcodetype" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="PKBuilding">
+			<xs:selector xpath="buildings/building"/>
+			<xs:field xpath="@BuildingCode"/>
+		</xs:key>
+
+	</xs:element>
+</xs:schema>
